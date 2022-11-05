@@ -1,0 +1,64 @@
+{% extends 'sb_admin_template/index.html.twig' %}
+
+{% block title %}Personnes{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">First</th>
+            <th scope="col">Last</th>
+            <th scope="col">age</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for p in personnes %}
+            <tr>
+                <th>{{ p.id }}</th>
+                <td>{{ p.firstname }}</td>
+                <td>{{ p.lastname }}</td>
+                <td>{{ p.age }}</td>
+                <td>
+                    <a href="{{ path('personne.detail',{id: p.id}) }}" class="link-info" style="text-decoration: none">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </a>
+                    <a href="{{ path('personne.delete',{id: p.id}) }}" class="link-danger">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block pagination %}
+    {% if isPaginated is defined and isPaginated %}
+        <div class="d-flex justify-content-center">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+
+                    {% if pageactuelle != 1 %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ path('personne.pagination', {page:pageactuelle-1, nbrRecord:nbrecords}) }}">Previous</a>
+                        </li>
+                    {% endif %}
+
+                    {% for i in range(1,nbpagetotale) %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ path('personne.pagination',{page: i , nbrRecord:nbrecords}) }}">{{ i }}</a>
+                        </li>
+                    {% endfor %}
+                    {% if pageactuelle != nbpagetotale %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ path('personne.pagination', {page:pageactuelle+1, nbrRecord:nbrecords}) }}">Next</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    {% endif %}
+{% endblock %}

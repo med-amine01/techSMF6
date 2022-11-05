@@ -1,0 +1,9 @@
+{% extends 'sb_admin_template/index.html.twig' %}
+
+{% block title %}Personnes{% endblock %}
+
+{% block body %}
+<div class="alert alert-success">
+ {{ personne.id }} = {{ personne.firstname }} {{ personne.lastname }} age : {{ personne.age }}
+</div>
+{% endblock %}

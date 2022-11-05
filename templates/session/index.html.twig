@@ -1,0 +1,16 @@
+{% extends 'sb_admin_template/index.html.twig' %}
+{% block title %}
+{% endblock %}
+
+{% block PageTitle %}
+    Todo List
+{% endblock %}
+
+{% block body %}
+
+    <ul class="list-group">
+        <li class="list-group-item">
+            Nombre de visite =  {{ app.session.get('nbvisite') }}
+        </li>
+    </ul>
+{% endblock %}

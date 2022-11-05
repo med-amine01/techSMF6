@@ -1,0 +1,21 @@
+{% extends 'sb_admin_template/index.html.twig' %}
+{% block title %}
+{% endblock %}
+
+{% block PageTitle %}
+    Todo List
+{% endblock %}
+
+{% block body %}
+
+
+<ul class="list-group">
+    {% for name,content in app.session.get('todos') %}
+        <li class="list-group-item">
+            {{ name }} : {{ content }}
+        </li>
+    {% endfor %}
+
+</ul>
+
+{% endblock %}
