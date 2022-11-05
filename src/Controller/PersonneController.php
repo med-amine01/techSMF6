@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Personne;
 
+use App\Form\PersonneType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -37,29 +39,6 @@ class PersonneController extends AbstractController
 
     }
 
-    #[Route('/personnes/update/{id}/{fn}/{ln}/{age}', name: 'personne.update')]
-    public function updatePersonne(ManagerRegistry $doctrine, Personne $personne = null, $fn,$ln,$age) : Response
-    {
-        if(isset($personne))
-        {
-            $mg = $doctrine->getManager();
-            $personne->setFirstname($fn);
-            $personne->setLastname($ln);
-            $personne->setAge($age);
-
-            $mg->persist($personne);
-
-
-            $this->addFlash('success',$personne->getFirstname()." à été mis a jour");
-            //exécution
-            $mg->flush();
-        }
-        else
-        {
-            $this->addFlash('error',"la personne n'existe pas");
-        }
-        return $this->redirectToRoute('personne.pagination');
-    }
 
     #[Route('/personnes/delete/{id}', name: 'personne.delete')]
     public function deletePersonne(ManagerRegistry $doctrine, Personne $personne = null) : Response
@@ -148,23 +127,64 @@ class PersonneController extends AbstractController
         ]);
     }
 
-    #[Route('/personnes/add', name: 'personne.add')]
-    public function addPersonne(ManagerRegistry $doctrine) : Response
+    #[Route('/personnes/update/{id?0}', name: 'personne.update')]
+    public function updatePersonne(ManagerRegistry $doctrine, Personne $personne = null, Request $request) : Response
     {
-        //
-        $entityManager = $doctrine->getManager();
+        //si la personne (id ==0) est null
+        if (!isset($personne))
+        {
+            return $this->redirectToRoute('personne.pagination');
+        }
+
+        $form = $this->createForm(PersonneType::class, $personne);
+
+        $form->handleRequest($request); //form now know it's a post request
+
+        if ($form->isSubmitted())
+        {
+            $entityManager = $doctrine->getManager();
+            //$form->getData(); return array of data
+
+            $entityManager->persist($personne);
+            $entityManager->flush();
+
+            $this->addFlash('success', "la personne a été mis a jour");
+            return $this->redirectToRoute('personne.pagination');
+        }
+
+        return $this->render('personne/add-personne.html.twig',[
+            //passer la form au formulaire
+            'f'=>$form->createView(),
+            'isEdited'=>true
+        ]);
+    }
+
+    #[Route('/personnes/add', name: 'personne.add')]
+    public function addPersonne(ManagerRegistry $doctrine, Request $request) : Response
+    {
         $personne = new Personne();
-        $personne->setFirstname("med amine");
-        $personne->setLastname("chebbi");
-        $personne->setAge(24);
 
-        // tell Doctrine you want to (eventually) save the person (no queries yet)
-        $entityManager->persist($personne);
+        //l'image de notre formulaire
+        $form = $this->createForm(PersonneType::class, $personne);
 
-        // actually executes the queries (i.e. the INSERT query)
-        $entityManager->flush();
-        $this->addFlash('success',"personne ajouté");
-        return $this->redirectToRoute('personne.get');
+        $form->handleRequest($request); //form now know it's a post request
+
+        if($form->isSubmitted())
+        {
+            $entityManager = $doctrine->getManager();
+            //$form->getData(); return array of data
+
+            $entityManager->persist($personne);
+            $entityManager->flush();
+
+            $this->addFlash('success',"la personne a été ajouté avec succée");
+            return $this->redirectToRoute('personne.pagination');
+        }
+        return $this->render('personne/add-personne.html.twig',[
+            //passer la form au formulaire
+            'f'=>$form->createView(),
+            'isEdited'=>false
+        ]);
     }
 
 

@@ -10,6 +10,7 @@
             <th scope="col">First</th>
             <th scope="col">Last</th>
             <th scope="col">age</th>
+            <th scope="col">Société</th>
             <th scope="col">Action</th>
         </tr>
         </thead>
@@ -21,12 +22,16 @@
                 <td>{{ p.firstname }}</td>
                 <td>{{ p.lastname }}</td>
                 <td>{{ p.age }}</td>
+                <td>{{ p.societe }}</td>
                 <td>
                     <a href="{{ path('personne.detail',{id: p.id}) }}" class="link-info" style="text-decoration: none">
                         <i class="fa-solid fa-circle-info"></i>
                     </a>
-                    <a href="{{ path('personne.delete',{id: p.id}) }}" class="link-danger">
+                    <a href="{{ path('personne.delete',{id: p.id}) }}" class="link-danger" style="text-decoration: none">
                         <i class="fa-solid fa-trash"></i>
+                    </a>
+                    <a href="{{ path('personne.update',{id: p.id}) }}" class="link-warning">
+                        <i class="fa-solid fa-user-pen"></i>
                     </a>
                 </td>
             </tr>
