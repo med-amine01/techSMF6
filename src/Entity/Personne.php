@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\PersonneRepository;
+use App\Traits\TimeStampTrait;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -10,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\HasLifecycleCallbacks]
 class Personne
 {
+    use TimeStampTrait;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -24,11 +26,8 @@ class Personne
     #[ORM\Column(length: 50)]
     private ?string $lastname = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $createdAt = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $updatedAt = null;
+    #[ORM\ManyToOne(inversedBy: 'Personne')]
+    private ?Societe $societe = null;
 
 
     public function getId(): ?int
@@ -77,39 +76,17 @@ class Personne
         return $this->createdAt;
     }
 
-    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    public function getSociete(): ?Societe
     {
-        $this->createdAt = $createdAt;
-
-        return $this;
+        return $this->societe;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function setSociete(?Societe $societe): self
     {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
+        $this->societe = $societe;
 
         return $this;
     }
 
 
-    //wehen ever we add or modify Person : they are working like triggers
-    //PrePersist : we have to prepare the object and set the date value before flush()
-    //otherwise we can't set the date if put PostPersist
-    #[ORM\PrePersist]
-    public function setCreatedAtValue()
-    {
-        $this->createdAt = new \DateTime();
-        $this->updatedAt = new \DateTime();
-    }
-
-    #[ORM\PreUpdate]
-    public function onPreUpdate()
-    {
-        $this->updatedAt = new \DateTime();
-    }
 }
