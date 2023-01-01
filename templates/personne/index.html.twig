@@ -1,8 +1,13 @@
 {% extends 'sb_admin_template/index.html.twig' %}
 
-{% block title %}Personnes{% endblock %}
+{% block PageTitle %}Employees{% endblock %}
 
 {% block body %}
+    {% if is_granted("ROLE_ADMIN") %}
+    <a href="{{ path('personne.add') }}" class="btn btn-outline-primary" style="text-decoration: none">
+        ADD <i class="fa-solid fa-square-plus"></i>
+    </a>
+    {% endif %}
     <table class="table">
         <thead>
         <tr>
@@ -27,12 +32,36 @@
                     <a href="{{ path('personne.detail',{id: p.id}) }}" class="link-info" style="text-decoration: none">
                         <i class="fa-solid fa-circle-info"></i>
                     </a>
-                    <a href="{{ path('personne.delete',{id: p.id}) }}" class="link-danger" style="text-decoration: none">
-                        <i class="fa-solid fa-trash"></i>
+                    {% if is_granted("ROLE_ADMIN") %}
+                    <a href="#exampleModal" data-bs-toggle="modal" class="link-danger" style="text-decoration: none">
+                        <i class="fa-solid fa-user-xmark"></i>
                     </a>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Delete {{ p.firstname }} {{ p.lastname }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete this person ?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">
+                                        <a href="{{ path('personne.delete',{id: p.id}) }}" class="link-light" style="text-decoration: none">Confirm</a>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <a href="{{ path('personne.update',{id: p.id}) }}" class="link-warning">
                         <i class="fa-solid fa-user-pen"></i>
                     </a>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
@@ -67,3 +96,6 @@
         </div>
     {% endif %}
 {% endblock %}
+
+
+

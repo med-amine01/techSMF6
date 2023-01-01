@@ -13,13 +13,13 @@ class SocieteFixture extends Fixture
     {
         $faker = Factory::create();
 
-        for ($i=0;$i<20;$i++)
+        for ($i=0;$i<30;$i++)
         {
             $soc = new Societe();
             $soc->setNameSoc($faker->company);
+            $soc->setAddress($faker->address);
             $manager->persist($soc);
         }
-
 
         $manager->flush();
     }

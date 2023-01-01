@@ -1,0 +1,43 @@
+{% extends 'sb_admin_template/index.html.twig' %}
+
+{% block PageTitle %}Societe index{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_societe_new') }}" class="btn btn-outline-primary" style="text-decoration: none">
+        ADD <i class="fa-solid fa-square-plus"></i>
+    </a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">NameSociete</th>
+                <th scope="col">Address</th>
+                <th scope="col">actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for societe in societes %}
+            <tr>
+                <td>{{ societe.id }}</td>
+                <td>{{ societe.nameSoc }}</td>
+                <td>{{ societe.address }}</td>
+
+                <td>
+                    <a href="{{ path('app_societe_show', {'id': societe.id}) }}" class="link-info" style="text-decoration: none">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </a>
+                    <a href="{{ path('app_societe_edit', {'id': societe.id}) }}" class="link-warning" style="text-decoration: none">
+                        <i class="fa-solid fa-user-pen"></i>
+                    </a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}

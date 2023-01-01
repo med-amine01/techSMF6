@@ -24,6 +24,9 @@ class Societe
     #[ORM\OneToMany(mappedBy: 'societe', targetEntity: Personne::class)]
     private Collection $Personne;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $Address = null;
+
     public function __construct()
     {
         $this->Personne = new ArrayCollection();
@@ -79,5 +82,17 @@ class Societe
     public function __toString(): string
     {
         return $this->nameSoc;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->Address;
+    }
+
+    public function setAddress(?string $Address): self
+    {
+        $this->Address = $Address;
+
+        return $this;
     }
 }

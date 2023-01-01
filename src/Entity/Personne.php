@@ -18,7 +18,8 @@ class Personne
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $firstname = null;
+    #[Assert\NotBlank]
+    private ?string $firstname;
 
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $age = null;
@@ -28,6 +29,12 @@ class Personne
 
     #[ORM\ManyToOne(inversedBy: 'Personne')]
     private ?Societe $societe = null;
+
+    #[ORM\ManyToOne(inversedBy: 'personnes')]
+    private ?SystemUser $createdBy = null;
+
+//    #[ORM\Column(length: 70)]
+//    private ?string $emails = null;
 
 
     public function getId(): ?int
@@ -87,6 +94,19 @@ class Personne
 
         return $this;
     }
+
+    public function getCreatedBy(): ?SystemUser
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?SystemUser $createdBy): self
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
 
 
 }

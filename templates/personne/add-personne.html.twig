@@ -1,8 +1,10 @@
 {% extends 'sb_admin_template/index.html.twig' %}
 
+
 {% block body %}
 {#    form est une fonction qui prendre l'objet passer(createView) et le convertir en html,css ...#}
     {{ form_start(f) }}
+{#    {{ form_start(f ,{'attr':{'novalidate':'novalidate'}}) }}#}
     <div class="row">
         <div class="col">{{ form_row(f.firstname) }}</div>
         <div class="col">{{ form_row(f.lastname) }}</div>
@@ -25,4 +27,6 @@
     {% endif %}
 
 {% endblock %}
+
+
 

@@ -1,0 +1,13 @@
+{% extends 'sb_admin_template/index.html.twig' %}
+
+{% block title %}Edit Societe{% endblock %}
+
+{% block body %}
+    <h1>Edit Societe</h1>
+
+    {{ include('societe/_form.html.twig', {'button_label': 'Update'}) }}
+
+    {{ include('societe/_delete_form.html.twig') }}
+
+    <a href="{{ path('app_societe_index') }}">back to list</a>
+{% endblock %}

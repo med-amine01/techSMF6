@@ -440,7 +440,7 @@ legend + * {
 /* rtl:raw:
 [type="tel"],
 [type="url"],
-[type="email"],
+[type="emails"],
 [type="number"] {
   direction: ltr;
 }
